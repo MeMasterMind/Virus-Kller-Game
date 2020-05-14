@@ -7,4 +7,4 @@ child sprites, but when I try to kill the main sprite, it kills all the children
 
 Thank you
 
-#SHAME ON YOU CODE STEALERS!
+----> SHAME ON YOU CODE STEALERS!
