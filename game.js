@@ -26,13 +26,7 @@ var gameStart = true;
 
 function create() {
 
-    //virus = game.add.sprite(100, 100, 'virus');
-    this.virusGroup = game.add.group();
-    for (var i = 0; i < 50; i++)
-    {
-       virus.addChild(game.world.randomX, game.world.randomY, 'virus');
-
-    game.physics.startSystem(Phaser.Physics.ARCADE);}
+    game.physics.startSystem(Phaser.Physics.ARCADE);
     
     
 
@@ -48,7 +42,7 @@ function create() {
 
 
    virus = game.add.sprite(game.world.randomX, game.world.randomY, 'virus');
-// adding childs
+
     virus.addChild(game.make.sprite(game.world.randomX, game.world.randomY, 'virus' ));
     virus.addChild(game.make.sprite(game.world.randomX, game.world.randomY, 'virus' ));
     virus.addChild(game.make.sprite(game.world.randomX, game.world.randomY, 'virus' ));
