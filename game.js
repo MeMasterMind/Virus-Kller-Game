@@ -1,7 +1,7 @@
 
-var game = new Phaser.Game(1400, 600, Phaser.CANVAS, 'game', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(1400, 600, Phaser.CANVAS, 'game', { preload: preload, create: create, update: update, render: render });
 
-       
+
 
 
 function preload() {
@@ -26,9 +26,8 @@ var gameStart = true;
 
 function create() {
 
-    game.physics.startSystem(Phaser.Physics.ARCADE);
-    
-    
+
+
 
     bullets = game.add.group();
     bullets.enableBody = true;
@@ -67,7 +66,6 @@ function create() {
     virus.addChild(game.make.sprite(game.world.randomX, game.world.randomY, 'virus' ));
     virus.addChild(game.make.sprite(game.world.randomX, game.world.randomY, 'virus' ));
     virus.addChild(game.make.sprite(game.world.randomX, game.world.randomY, 'virus' ));
-    virus.addChild(game.make.sprite(game.world.randomX, game.world.randomY, 'virus' )); 
     virus.addChild(game.make.sprite(game.world.randomX, game.world.randomY, 'virus' ));
     virus.addChild(game.make.sprite(game.world.randomX, game.world.randomY, 'virus' ));
     virus.addChild(game.make.sprite(game.world.randomX, game.world.randomY, 'virus' ));
@@ -90,36 +88,38 @@ function create() {
     virus.addChild(game.make.sprite(game.world.randomX, game.world.randomY, 'virus' ));
     virus.addChild(game.make.sprite(game.world.randomX, game.world.randomY, 'virus' ));
     virus.addChild(game.make.sprite(game.world.randomX, game.world.randomY, 'virus' ));
-    virus.addChild(game.make.sprite(game.world.randomX, game.world.randomY, 'virus' )); 
+    virus.addChild(game.make.sprite(game.world.randomX, game.world.randomY, 'virus' ));
+    virus.addChild(game.make.sprite(game.world.randomX, game.world.randomY, 'virus' ));
 
-    
-   
-   
+
+
+
 
 
     spawn = game.add.sprite(600, 200, 'spawn');
     spawn.anchor.set(0, 5);
-    
+
 
     sprite = game.add.sprite(700, 300, 'weapon');
-    
+
 
     sprite.anchor.set(0.5);
 
-    game.physics.arcade.enable([sprite, bullets, virus, spawn], Phaser.Physics.ARCADE);
+    game.physics.arcade.enable([sprite, bullets, virus, spawn]);
+    game.physics.arcade.enable(virus.children);
 
     spawn.body.drag.set(0);
     spawn.body.maxVelocity.set(0);
-        
-    sprite.body.collideWorldBounds = true;  
- 
+
+    sprite.body.collideWorldBounds = true;
+
     sprite.body.drag.set(0);
 
     sprite.body.maxVelocity.set(800);
 
 
 
-   
+
     cursors = this.input.keyboard.createCursorKeys();
 
     fireButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
@@ -136,26 +136,13 @@ function update() {
 
 // This is where I got the problem
 
-   game.physics.arcade.collide(virus, bullets, () => {
+   game.physics.arcade.collide(virus.children, bullets, (child, bullet) => {
 
-    virus.kill();   
-
-
-   });   
+    child.kill();
+    bullet.kill();
 
 
-
-
-
-   game.physics.arcade.collide(virus, sprite, () => {
-
-   
-   
-   }) 
-
-
-   game.physics.arcade.collide(bullets, bullets);
-
+   });
 
     if (cursors.up.isDown)
     {
@@ -197,12 +184,22 @@ function update() {
 
 
     game.physics.arcade.moveToObject(virus, sprite, 200);
-   
 
 
-      
 
 
+
+
+}
+
+function render() {
+    var debug = this.game.debug;
+
+    debug.physicsGroup(this.world, 'rgba(0,0,255,0.25)');
+
+    virus.children.forEach(function (child) {
+        debug.body(child, 'rgba(255,0,0,0.25)');
+    });
 }
 
 
